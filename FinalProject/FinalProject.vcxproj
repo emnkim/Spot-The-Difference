@@ -131,7 +131,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="driver.cpp" />
+    <ClCompile Include="DifferenceDetector.cpp" />
+    <ClCompile Include="ImageAligner.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NoiseFilter.cpp" />
+    <ClCompile Include="RegionHighlighter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DifferenceDetector.h" />
+    <ClInclude Include="ImageAligner.h" />
+    <ClInclude Include="RegionHighlighter.h" />
+    <ClInclude Include="NoiseFilter.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

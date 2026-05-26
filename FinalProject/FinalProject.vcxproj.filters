@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="driver.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ImageAligner.cpp" />
+    <ClCompile Include="DifferenceDetector.cpp" />
+    <ClCompile Include="NoiseFilter.cpp" />
+    <ClCompile Include="RegionHighlighter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageAligner.h" />
+    <ClInclude Include="DifferenceDetector.h" />
+    <ClInclude Include="NoiseFilter.h" />
+    <ClInclude Include="RegionHighlighter.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
 </Project>
