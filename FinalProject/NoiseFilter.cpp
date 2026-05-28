@@ -67,7 +67,7 @@ Mat applyBlur(const Mat& binary, int kernelSize) {
     Post-conditions: Returns a binary Mat the same size as binary.
                      Small isolated regions are removed
                      Large regions are preserved.
-*/          Small isolated regions are removed; large regions are preserved.
+          Small isolated regions are removed; large regions are preserved.
 */
 Mat morphOpen(const Mat& binary, int kernelSize, int iterations) {
     Mat eroded, output;

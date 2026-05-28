@@ -3,6 +3,9 @@
 //
 // This file contains the declaration of the RegionHighlighter class,
 //	which is responsible for highlighting regions of interest in an image.
+#pragma once
+#include <vector>
+#include <opencv2/core.hpp>
 
 class RegionHighlighter {
 public:
