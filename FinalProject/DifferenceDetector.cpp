@@ -84,10 +84,19 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
 	}
 
 	// Noise filtering
-
+	cv::Mat mask = cleanMask(diff);
 
 	// Contour detection
+	std::vector<std::vector<cv::Point>> contours;
+	cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
+	// Filter out small contours
+	std::vector<std::vector<cv::Point>> contours;
+	for (const auto& contour : contours) {
+		if (cv::contourArea(contour) >= 200.0) {
+			contours.push_back(contour);
+		}
+	}
 
-	return {};
+	return contours;
 }
