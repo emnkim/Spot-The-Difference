@@ -32,7 +32,7 @@ using namespace std;
                      Values are between 0.0 and 1.0.
                      Returns zeros for any metric where the denominator is zero.
 */
-EvalMetrics evaluate(const Mat& predicted, const Mat& groundTruth) {
+Metrics evaluate(const Mat& predicted, const Mat& groundTruth) {
     Mat pred, gt;
     threshold(predicted, pred, 127, 1, THRESH_BINARY);
     threshold(groundTruth, gt, 127, 1, THRESH_BINARY);
@@ -50,7 +50,7 @@ EvalMetrics evaluate(const Mat& predicted, const Mat& groundTruth) {
     double fp = sum(fp_mat)[0];
     double fn = sum(fn_mat)[0];
 
-    EvalMetrics m;
+    Metrics m;
     m.precision = (tp + fp > 0) ? tp / (tp + fp) : 0.0;
     m.recall = (tp + fn > 0) ? tp / (tp + fn) : 0.0;
     m.f1 = (m.precision + m.recall > 0) ? 2.0 * m.precision * m.recall / (m.precision + m.recall) : 0.0;
@@ -67,7 +67,7 @@ EvalMetrics evaluate(const Mat& predicted, const Mat& groundTruth) {
     Post-conditions: Precision, recall, F1, and IoU are printed to stdout.
                      No return value.
 */
-void printMetrics(const EvalMetrics& m, const string& label) {
+void printMetrics(const Metrics& m, const string& label) {
     cout << fixed << setprecision(4);
     if (!label.empty()) cout << "[" << label << "]\n";
     cout << "  Precision : " << m.precision << "\n"

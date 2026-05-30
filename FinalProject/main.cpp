@@ -19,30 +19,41 @@
 #include "RegionHighlighter.h"
 
 using namespace cv;
+using namespace std;
 
 // main
 // Preconditions: Command line should have 3 arguments: program name, input image 1, input image 2
+//                OR run without arguments to use hardcoded test images
 // Postconditions: Creates and saves an output image with differences highlighted
 int main(int argc, char** argv)
 {
-	// Check command line arguments
-	if (argc != 3) {
-		std::cerr << "Usage: " << argv[0] << " <image1> <image2>" << std::endl;
-		std::cerr << "Example: " << argv[0] << " photo1.jpg photo2.jpg" << std::endl;
-		return -1;
+	// Hardcoded image paths for testing
+	string imagePath1 = "../../Before/test_1.png";
+	string imagePath2 = "../../After/test_1.png";
+
+	// If command line arguments are provided, use them instead
+	if (argc == 3) {
+		imagePath1 = argv[1];
+		imagePath2 = argv[2];
+		std::cout << "Using command line arguments..." << std::endl;
+	}
+	else {
+		std::cout << "Using hardcoded test images..." << std::endl;
+		std::cout << "  Image 1: " << imagePath1 << std::endl;
+		std::cout << "  Image 2: " << imagePath2 << std::endl;
 	}
 
 	// Load images
-	Mat img1 = imread(argv[1]);
-	Mat img2 = imread(argv[2]);
+	Mat img1 = imread(imagePath1);
+	Mat img2 = imread(imagePath2);
 
 	if (img1.empty()) {
-		std::cerr << "Error: Could not load image: " << argv[1] << std::endl;
+		std::cerr << "Error: Could not load image: " << imagePath1 << std::endl;
 		return -1;
 	}
 
 	if (img2.empty()) {
-		std::cerr << "Error: Could not load image: " << argv[2] << std::endl;
+		std::cerr << "Error: Could not load image: " << imagePath2 << std::endl;
 		return -1;
 	}
 
@@ -58,9 +69,22 @@ int main(int argc, char** argv)
 	DifferenceDetector detector;
 	std::vector<std::vector<Point>> contours = detector.detectDifferences(img1, alignedImg2);
 
+	// Convert contours to regions for highlighting
+	std::vector<DetectedRegion> regions;
+	for (const auto& contour : contours) {
+		Rect bbox = boundingRect(contour);
+		DetectedRegion r;
+		r.x = bbox.x;
+		r.y = bbox.y;
+		r.w = bbox.width;
+		r.h = bbox.height;
+		r.area = contourArea(contour);
+		r.contour = contour;
+		regions.push_back(r);
+	}
+
 	// Highlight the differences
-	RegionHighlighter highlighter;
-	Mat outputImg = highlighter.highlightRegions(img1, contours);
+	Mat outputImg = drawBoundingBoxes(img1, regions, Scalar(0, 255, 0), 2, true);
 
 	// Save the output
 	std::string outputFilename = "differences_output.jpg";

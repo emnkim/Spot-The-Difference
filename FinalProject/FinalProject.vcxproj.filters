@@ -7,6 +7,7 @@
     <ClCompile Include="NoiseFilter.cpp" />
     <ClCompile Include="RegionHighlighter.cpp" />
     <ClCompile Include="types.cpp" />
+    <ClCompile Include="Evaluation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageAligner.h" />
@@ -14,5 +15,9 @@
     <ClInclude Include="NoiseFilter.h" />
     <ClInclude Include="RegionHighlighter.h" />
     <ClInclude Include="types.h" />
+    <ClInclude Include="Evaluation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="run.bat" />
   </ItemGroup>
 </Project>

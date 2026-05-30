@@ -91,12 +91,12 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
 	cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
 	// Filter out small contours
-	std::vector<std::vector<cv::Point>> contours;
+	std::vector<std::vector<cv::Point>> filteredContours;
 	for (const auto& contour : contours) {
-		if (cv::contourArea(contour) >= 200.0) {
-			contours.push_back(contour);
+		if (cv::contourArea(contour) >= minContourArea) {
+			filteredContours.push_back(contour);
 		}
 	}
 
-	return contours;
+	return filteredContours;
 }

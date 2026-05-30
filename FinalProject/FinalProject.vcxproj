@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DifferenceDetector.cpp" />
+    <ClCompile Include="Evaluation.cpp" />
     <ClCompile Include="ImageAligner.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NoiseFilter.cpp" />
@@ -140,10 +141,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DifferenceDetector.h" />
+    <ClInclude Include="Evaluation.h" />
     <ClInclude Include="ImageAligner.h" />
     <ClInclude Include="RegionHighlighter.h" />
     <ClInclude Include="NoiseFilter.h" />
     <ClInclude Include="types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="run.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
