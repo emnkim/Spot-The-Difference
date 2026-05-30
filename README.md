@@ -1,3 +1,23 @@
+# Spot-The-Difference
+
+An automated computer vision application that detects and highlights differences between two images using feature-based alignment and pixel-level differencing.
+
+## Pipeline
+
+1. **Image Alignment** - Align images using ORB feature matching and homography
+2. **Grayscale & Differencing** - Convert to grayscale and compute pixel differences
+3. **Noise Filtering** - Reduce false positives with morphological operations
+4. **Contour Detection** - Find regions of meaningful change
+5. **Visualization** - Draw bounding boxes around detected differences
+
+## Components
+
+### ImageAligner
+This class aligns two images using ORB (Oriented FAST and Rotated BRIEF) feature detection and homography estimation. Real-world images are rarely perfectly aligned due to camera movement, rotation, or perspective differences. Without proper alignment, the pipeline would detect false differences from positional shifts rather than actual content changes. The process uses RANSAC-based homography estimation with adaptive feature matching to handle rotation, scale, and perspective distortion.
+
+### DifferenceDetector
+This class converts aligned images to grayscale and computes pixel-level differences. Grayscale conversion simplifies comparison and eliminates false differences from color lighting variations. The absolute pixel-wise difference creates a "difference map" where bright pixels indicate changes, which is then passed to the noise filtering pipeline for cleaning.
+
 ### NoiseFilter
 The class takes the grayscale difference image and cleans it into a binary mask suitable for contour detection. Since absolute differencing picks up minor lighting variation and sensor noise, four operations are applied in this order: 
 
