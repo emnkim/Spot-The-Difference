@@ -4,11 +4,11 @@ An automated computer vision application that detects and highlights differences
 
 ## Pipeline
 
-1. **Image Alignment** - Align images using ORB feature matching and homography
-2. **Grayscale & Differencing** - Convert to grayscale and compute pixel differences
-3. **Noise Filtering** - Reduce false positives with morphological operations
-4. **Contour Detection** - Find regions of meaningful change
-5. **Visualization** - Draw bounding boxes around detected differences
+      1. Image Alignment - Align images using ORB feature matching and homography
+      2. Grayscale & Differencing - Convert to grayscale and compute pixel differences
+      3. Noise Filtering - Reduce false positives with morphological operations
+      4. Contour Detection - Find regions of meaningful change
+      5. Visualization - Draw bounding boxes around detected differences
 
 ## Components
 
