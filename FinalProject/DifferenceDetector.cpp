@@ -63,40 +63,45 @@ cv::Mat DifferenceDetector::computeDifference(const cv::Mat& gray1, const cv::Ma
 // detectDifferences
 // Preconditions: img1 and img2 are valid, aligned images.
 // Postconditions: Returns a vector of contours representing meaningful regions of difference.
+// detectDifferences
+// Preconditions: img1 and img2 are valid, aligned images.
+// Postconditions: Returns a vector of contours representing meaningful regions of difference.
 std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const cv::Mat& img1, const cv::Mat& img2)
 {
-	// Validate inputs
-	if (img1.empty() || img2.empty()) {
-		std::cerr << "Error: One or both input images are empty." << std::endl;
-		return {};
-	}
+    // Validate inputs
+    if (img1.empty() || img2.empty()) {
+        std::cerr << "Error: One or both input images are empty." << std::endl;
+        return {};
+    }
 
-	// Convert both images to grayscale
-	cv::Mat gray1 = convertToGrayscale(img1);
-	cv::Mat gray2 = convertToGrayscale(img2);
+    // Convert both images to grayscale
+    cv::Mat gray1 = convertToGrayscale(img1);
+    cv::Mat gray2 = convertToGrayscale(img2);
 
-	// Compute absolute difference
-	cv::Mat diff = computeDifference(gray1, gray2);
+    // Compute absolute difference
+    cv::Mat diff = computeDifference(gray1, gray2);
+    cv::imwrite("debug_diff.png", diff);
 
-	if (diff.empty()) {
-		std::cerr << "Error: Failed to compute difference." << std::endl;
-		return {};
-	}
+    if (diff.empty()) {
+        std::cerr << "Error: Failed to compute difference." << std::endl;
+        return {};
+    }
 
-	// Noise filtering
-	cv::Mat mask = cleanMask(diff);
+    // Noise filtering
+    cv::Mat mask = cleanMask(diff, 50);
+    cv::imwrite("debug_mask.png", mask);
 
-	// Contour detection
-	std::vector<std::vector<cv::Point>> contours;
-	cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    // Contour detection
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
-	// Filter out small contours
-	std::vector<std::vector<cv::Point>> filteredContours;
-	for (const auto& contour : contours) {
-		if (cv::contourArea(contour) >= minContourArea) {
-			filteredContours.push_back(contour);
-		}
-	}
+    // Filter out small contours
+    std::vector<std::vector<cv::Point>> filteredContours;
+    for (const auto& contour : contours) {
+        if (cv::contourArea(contour) >= minContourArea) {
+            filteredContours.push_back(contour);
+        }
+    }
 
-	return filteredContours;
+    return filteredContours;
 }
