@@ -1,15 +1,14 @@
 /*
 File: RegionHighlighter.h
 Author: Emily Kim and UV Raz
-Description: This module takes the binary mask from NoiseFilter and identifies
-             the specific regions where change has occurred. 
+Description: This class takes the binary mask from NoiseFilter and identifies the specific regions where there are changes. 
              It uses contour detection to find connected groups of white pixels, filters out anything too small,
-             and wraps each surviving region in a bounding box drawn directly onto the original image. 
-             The output is an image that clearly marks every detected change, along with a list
-             of region data (position, size, area).
+             and wraps the left over region in a bounding box drawn onto the original image. 
+             The output is an image that marks every change. It will also create region data (position, size, area) 
+             that can be used for further analysis or passed to evaluation for scoring with the ground truth of our testing dataset.
 
 Assumptions: Input mask is a binary CV_8UC1 Mat produced by NoiseFilter.
-             Input original image is a non-empty BGR Mat the same size as the mask.
+             Input original image is same size as the mask.
              minArea of 200.0 pixels filters out small noise contours.
              Bounding boxes are drawn in red (0, 0, 255) by default.
 

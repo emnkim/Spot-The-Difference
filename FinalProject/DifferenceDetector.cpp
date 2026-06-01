@@ -9,6 +9,8 @@
 #include "NoiseFilter.h"
 #include <opencv2/imgproc.hpp>
 #include <iostream>
+#include <opencv2/highgui.hpp>
+
 
 // convertToGrayscale
 // Preconditions: img is a valid image.
@@ -80,7 +82,7 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
 
     // Compute absolute difference
     cv::Mat diff = computeDifference(gray1, gray2);
-    cv::imwrite("debug_diff.png", diff);
+    cv::imwrite("1demo_diff.png", diff);
 
     if (diff.empty()) {
         std::cerr << "Error: Failed to compute difference." << std::endl;
@@ -88,8 +90,22 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
     }
 
     // Noise filtering
-    cv::Mat mask = cleanMask(diff, 50);
-    cv::imwrite("debug_mask.png", mask);
+    //cv::Mat mask = cleanMask(diff, 80, 7, 5, 11);
+    //cv::imwrite("debug_mask.png", mask);
+
+
+    // DEMO
+    int border = 30;
+    cv::rectangle(diff, cv::Point(0, 0), cv::Point(diff.cols-1, diff.rows-1), cv::Scalar(0), border);
+    cv::imwrite("2demo_diff_bordered.png", diff);
+    cv::Mat step1 = applyThreshold(diff, 80);
+    cv::imwrite("3demo_threshold.png", step1);
+    cv::Mat step2 = applyBlur(step1, 7);
+    cv::imwrite("4demo_blur.png", step2);
+    cv::Mat step3 = morphOpen(step2, 5);
+    cv::imwrite("5demo_morph_open.png", step3);
+    cv::Mat mask = morphClose(step3, 11);
+    cv::imwrite("6debug_final_mask.png", mask);
 
     // Contour detection
     std::vector<std::vector<cv::Point>> contours;

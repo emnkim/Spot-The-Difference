@@ -13,7 +13,7 @@ int gaussKernelSize = 5;          // Size of the Gaussian blur kernel for noise 
 int morphKernelSize = 3;          // Size of the morphological operation kernel for noise reduction
 
 // Contour filtering parameters
-double minContourArea = 100.0;    // Minimum area of contours to be considered meaningful regions
+double minContourArea = 5000.0;    // Minimum area of contours to be considered meaningful regions
 
 // Visualization parameters
 cv::Scalar boxColor = cv::Scalar(0, 255, 0); // Color of the bounding boxes (green)

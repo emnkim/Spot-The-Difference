@@ -10,6 +10,7 @@
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
 #include <iostream>
+#include <opencv2/highgui.hpp>
 
 // align
 // Preconditions: img1 and img2 are valid non-empty images.
@@ -22,12 +23,22 @@ cv::Mat ImageAligner::align(const cv::Mat& img1, const cv::Mat& img2) {
 		return img2;
 	}
 
+    // Normalize both images before feature detection
+    cv::Mat img1Gray, img2Gray, img1Norm, img2Norm;
+    cv::cvtColor(img1, img1Gray, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(img2, img2Gray, cv::COLOR_BGR2GRAY);
+    cv::normalize(img1Gray, img1Norm, 0, 255, cv::NORM_MINMAX);
+    cv::normalize(img2Gray, img2Norm, 0, 255, cv::NORM_MINMAX);
+
 	// Detect ORB features and compute descriptors.
-	cv::Ptr<cv::ORB> orb = cv::ORB::create();
+	cv::Ptr<cv::ORB> orb = cv::ORB::create(10000);
 	std::vector<cv::KeyPoint> keypoints1, keypoints2;
 	cv::Mat descriptors1, descriptors2;
-	orb->detectAndCompute(img1, cv::noArray(), keypoints1, descriptors1);
-	orb->detectAndCompute(img2, cv::noArray(), keypoints2, descriptors2);
+	orb->detectAndCompute(img1Norm, cv::noArray(), keypoints1, descriptors1);
+	orb->detectAndCompute(img2Norm, cv::noArray(), keypoints2, descriptors2);
+
+    std::cout << "Keypoints1: " << keypoints1.size() 
+          << ", Keypoints2: " << keypoints2.size() << std::endl;
 
 	// Check if we have enough keypoints
 	if (keypoints1.size() < minMatchCount || keypoints2.size() < minMatchCount) {
@@ -36,27 +47,16 @@ cv::Mat ImageAligner::align(const cv::Mat& img1, const cv::Mat& img2) {
 	}
 
 	// Match features using the Brute-Force matcher.
-	cv::BFMatcher matcher(cv::NORM_HAMMING);
-	std::vector<cv::DMatch> matches;
-	matcher.match(descriptors1, descriptors2, matches);
+    cv::BFMatcher matcher(cv::NORM_HAMMING);
+    std::vector<std::vector<cv::DMatch>> matches;
+    matcher.knnMatch(descriptors1, descriptors2, matches, 2);
 
-	// Filter matches based on distance.
-	// Calculate mean distance for adaptive thresholding
-	double meanDistance = 0.0;
-	for (const auto& match : matches) {
-		meanDistance += match.distance;
-	}
-	meanDistance /= matches.size();
-
-	// Use the threshold from types.h (default 30.0)
-	double matchThreshold = std::min(diffThreshold, meanDistance * 0.7);
-
-	std::vector<cv::DMatch> goodMatches;
-	for (const auto& match : matches) {
-		if (match.distance < matchThreshold) {
-			goodMatches.push_back(match);
-		}
-	}
+    std::vector<cv::DMatch> goodMatches;
+    for (const auto& match : matches) {
+        if (match.size() == 2 && match[0].distance < 0.95f * match[1].distance) {
+            goodMatches.push_back(match[0]);
+        }
+    }
 
 	std::cout << "Total matches: " << matches.size() 
 			  << ", Good matches: " << goodMatches.size() << std::endl;
@@ -75,18 +75,16 @@ cv::Mat ImageAligner::align(const cv::Mat& img1, const cv::Mat& img2) {
 		points2.push_back(keypoints2[match.trainIdx].pt);
 	}
 
-	// Use RANSAC to compute robust homography
-	cv::Mat homography = cv::findHomography(points2, points1, cv::RANSAC, 5.0);
+    cv::Mat affine = cv::estimateAffinePartial2D(points2, points1, cv::noArray(), cv::RANSAC, 5.0);
 
-	// Check if homography computation was successful
-	if (homography.empty()) {
-		std::cerr << "Failed to compute homography matrix." << std::endl;
-		return img2;
-	}
+    if (affine.empty()) {
+        std::cerr << "Count not compute affine transform." << std::endl;
+        return img2;
+    }
 
-	// Warp img2 to align with img1 using the computed homography.
-	cv::Mat alignedImg;
-	cv::warpPerspective(img2, alignedImg, homography, img1.size());
+    cv::Mat alignedImg;
+    cv::warpAffine(img2, alignedImg, affine, img1.size());
 
-	return alignedImg;
+    cv::imwrite("debug_aligned.png", alignedImg);
+    return alignedImg;
 }
