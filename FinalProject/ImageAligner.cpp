@@ -37,9 +37,6 @@ cv::Mat ImageAligner::align(const cv::Mat& img1, const cv::Mat& img2) {
 	orb->detectAndCompute(img1Norm, cv::noArray(), keypoints1, descriptors1);
 	orb->detectAndCompute(img2Norm, cv::noArray(), keypoints2, descriptors2);
 
-    std::cout << "Keypoints1: " << keypoints1.size() 
-          << ", Keypoints2: " << keypoints2.size() << std::endl;
-
 	// Check if we have enough keypoints
 	if (keypoints1.size() < minMatchCount || keypoints2.size() < minMatchCount) {
 		std::cerr << "Not enough keypoints detected in one or both images." << std::endl;
@@ -58,8 +55,7 @@ cv::Mat ImageAligner::align(const cv::Mat& img1, const cv::Mat& img2) {
         }
     }
 
-	std::cout << "Total matches: " << matches.size() 
-			  << ", Good matches: " << goodMatches.size() << std::endl;
+	std::cout << "Total matches: " << matches.size() << ", Good matches: " << goodMatches.size() << std::endl;
 
 	// Check if we have enough good matches to compute homography.
 	if (goodMatches.size() < minMatchCount) {

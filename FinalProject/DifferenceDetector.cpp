@@ -91,7 +91,7 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
 
     // Noise filtering
     //cv::Mat mask = cleanMask(diff, 80, 7, 5, 11);
-    //cv::imwrite("debug_mask.png", mask);
+    //cv::imwrite("mask.png", mask);
 
 
     // DEMO
