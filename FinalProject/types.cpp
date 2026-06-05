@@ -6,7 +6,12 @@
 
 // Image alignment parameters
 int minMatchCount = 10;          // Minimum number of ORB matches to consider a valid homography
-double diffThreshold = 30.0;     // Pixel intensity difference threshold for identifying meaningful regions
+double diffThreshold = 80.0;     // Pixel intensity difference threshold for identifying meaningful regions
+
+// Noise filtering parameters for demo
+int gaussKernelSize = 7;          // Size of the Gaussian blur kernel for noise reduction
+int morphOpenKernelSize = 5;          // Size of the morphological open operation kernel for noise reduction
+int morphCloseKernelSize = 11;          // Size of the morphological close operation kernel for noise reduction
 
 // Contour filtering parameters
 double minContourArea = 5000.0;    // Minimum area of contours to be considered meaningful regions
