@@ -1,5 +1,5 @@
 // ImageAligner.h
-// by UV Raz and Emily Kim, 5/24/2026 - 6/__/2026
+// by UV Raz and Emily Kim, 5/24/2026 - 6/04/2026
 //
 // This file contains the declaration of the ImageAligner class, 
 //	which is responsible for aligning two images using ORB feature 

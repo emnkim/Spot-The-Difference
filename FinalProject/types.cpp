@@ -1,5 +1,5 @@
 // types.cpp
-// by UV Raz and Emily Kim, 5/24/2026 - 6/__/2026
+// by UV Raz and Emily Kim, 5/24/2026 - 6/04/2026
 //
 // Implementation file for global configuration variables.
 #include "types.h"
