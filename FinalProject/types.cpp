@@ -8,10 +8,6 @@
 int minMatchCount = 10;          // Minimum number of ORB matches to consider a valid homography
 double diffThreshold = 30.0;     // Pixel intensity difference threshold for identifying meaningful regions
 
-// Noise filtering parameters
-int gaussKernelSize = 5;          // Size of the Gaussian blur kernel for noise reduction
-int morphKernelSize = 3;          // Size of the morphological operation kernel for noise reduction
-
 // Contour filtering parameters
 double minContourArea = 5000.0;    // Minimum area of contours to be considered meaningful regions
 

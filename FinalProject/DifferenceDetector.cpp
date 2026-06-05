@@ -90,11 +90,11 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
     }
 
     // Noise filtering
-    //cv::Mat mask = cleanMask(diff, 80, 7, 5, 11);
-    //cv::imwrite("mask.png", mask);
+    cv::Mat mask = cleanMask(diff, 80, 7, 5, 11);
+    cv::imwrite("mask.png", mask);
 
 
-    // DEMO
+    /* DEMO
     int border = 30;
     cv::rectangle(diff, cv::Point(0, 0), cv::Point(diff.cols-1, diff.rows-1), cv::Scalar(0), border);
     cv::imwrite("2demo_diff_bordered.png", diff);
@@ -106,6 +106,7 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
     cv::imwrite("5demo_morph_open.png", step3);
     cv::Mat mask = morphClose(step3, 11);
     cv::imwrite("6debug_final_mask.png", mask);
+    */
 
     // Contour detection
     std::vector<std::vector<cv::Point>> contours;
