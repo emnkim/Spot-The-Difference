@@ -1,5 +1,5 @@
 // main.cpp
-// by UV Raz and Emily Kim, 5/24/2026 - 6/__/2026
+// by UV Raz and Emily Kim, 5/24/2026 - 6/04/2026
 //
 // This program accepts two images on the command line and 
 //	outputs a third image with coloured bounding boxes drawn 
@@ -17,6 +17,7 @@
 #include "ImageAligner.h"
 #include "DifferenceDetector.h"
 #include "RegionHighlighter.h"
+#include "types.h"
 
 using namespace cv;
 using namespace std;
@@ -84,7 +85,7 @@ int main(int argc, char** argv)
 	}
 
 	// Highlight the differences
-	Mat outputImg = drawBoundingBoxes(img1, regions, Scalar(0, 255, 0), 2, true);
+	Mat outputImg = drawBoundingBoxes(img1, regions, boxColor, 2, true);
 
 	// Save the output
 	std::string outputFilename = "differences_output.jpg";

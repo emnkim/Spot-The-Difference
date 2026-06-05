@@ -1,5 +1,5 @@
 // DifferenceDetector.cpp
-// by UV Raz and Emily Kim, 5/24/2026 - 6/__/2026
+// by UV Raz and Emily Kim, 5/24/2026 - 6/04/2026
 //
 // This file contains the implementation of the DifferenceDetector class,
 //	which is responsible for computing the difference between two aligned images,
@@ -98,13 +98,13 @@ std::vector<std::vector<cv::Point>> DifferenceDetector::detectDifferences(const 
     int border = 30;
     cv::rectangle(diff, cv::Point(0, 0), cv::Point(diff.cols-1, diff.rows-1), cv::Scalar(0), border);
     cv::imwrite("2demo_diff_bordered.png", diff);
-    cv::Mat step1 = applyThreshold(diff, 80);
+    cv::Mat step1 = applyThreshold(diff, diffThreshold);
     cv::imwrite("3demo_threshold.png", step1);
-    cv::Mat step2 = applyBlur(step1, 7);
+    cv::Mat step2 = applyBlur(step1, gaussKernelSize);
     cv::imwrite("4demo_blur.png", step2);
-    cv::Mat step3 = morphOpen(step2, 5);
+    cv::Mat step3 = morphOpen(step2, morphOpenKernelSize);
     cv::imwrite("5demo_morph_open.png", step3);
-    cv::Mat mask = morphClose(step3, 11);
+    cv::Mat mask = morphClose(step3, morphCloseKernelSize);
     cv::imwrite("6debug_final_mask.png", mask);
 
     // Contour detection
